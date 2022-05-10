@@ -5,22 +5,34 @@ It allows an attacker to write an arbitrary file by creating a printer port that
 
 - CVE-2020-1048
 
+### Windows versions needed for CVE-2020-1048
+Windows 10 Version 1803, Windows 10 Version 1809, Windows 10 Version 1709, Windows 10, Windows 10 Version 1607, Windows 10 Version 1909, Windows 10 Version 1903, Windows 7, Windows 8.1, Windows RT 8.1, Windows Server version 1803 (Core Installation),Windows Server 2019 (Core installation), Windows Server 2016 (Core installation), Windows Server 2008 (Core installation), Windows Server 2008 (Core installation), Windows Server 2008 R2 (Core installation), Windows Server 2012 (Core installation), Windows Server 2012 R2.
+
+<!--- "It impacts all Windows versions going back to Windows NT 4, released in 1996." (In diversi siti scrivono quanto scritto in questo commento, altri quanto scritto sopra che più o meno è lo stesso concetto con le varie versioni, e ho anche filtrato un pò.... In generale per le varie versioni di Windows che sono affette dalla CVE mi sono basato sulla pagina ufficiale di microsoft della CVE specifica, in fondo alla pagina li trovate) --->
+
 
 ## SpoolFool
 
-- CVE-2020-1337
-- CVE-2020-1030
+- CVE-2020-1337   That is a bypass of (PrintDemon) CVE-2020-1048’s patch via a junction directory.
+- CVE-2020-1030   Allows arbitrary writing to the file system.
 
+### Windows versions needed for SpoolFool CVE-2020-1337 
+
+Windows 7, Windows RT 8.1, Windows 10,  Windows server 2008, Windows server 2012 R2, Windows server 2016, Windows server 2019, Windows server 2024.
+
+### Windows versions needed for SpoolFool CVE-2020-1030
+
+Windows 7, Windows 8.1, Windows 8.1 RT, Windows 10, Windows server 2004, Windows server 2008, Windows server 2008 R2, Windows server 2012, Windows server 2012 R2, Windows server 2019.
 
 
 ## Print Nightmare
 It allows remote code execution (RCE)
 
-<!--- CVE-2021-1675 addresses a different vulnerability in the same Print Spooler API call --->
+<!--- CVE-2021-1675 addresses a different vulnerability in the same Print Spooler API call. For CVE 1675, the attacker needs to have direct access to the machine to use a malicious DLL file to escalate privileges. While with CVE 34527, the attacker can remotely inject DLLs. --->
 
 - CVE-2021-34527
 
-### Windows versions for Print Nightmare
+### Windows versions needed for CVE-2021-34527
 
 Windows Server 2004, Windows Server 2008, Windows Server 2012, Windows Server 2012 R2, Windows Server 2016, Windows Server 2019, Windows 7, Windows RT 8.1, Windows 8.1, and Windows 10.
 
