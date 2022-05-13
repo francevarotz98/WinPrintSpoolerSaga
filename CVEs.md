@@ -1,8 +1,3 @@
-# CVE list
-
-CVE-2020-1070
-CVE-2010-2729 (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2729) 
-
 # History 
 - “The Printer Bug”, identified in 2018
   -  To exploit this vector, an unprivileged attacker in the network can remotely request a domain controller’s Print Spooler service to update an attacker-controlled host on new print jobs
