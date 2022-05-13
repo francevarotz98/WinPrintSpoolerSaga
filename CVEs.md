@@ -1,5 +1,43 @@
 # CVE list
 
+CVE-2020-1070
+CVE-2010-2729 (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2729) 
+
+# History 
+- “The Printer Bug”, identified in 2018
+  -  To exploit this vector, an unprivileged attacker in the network can remotely request a domain controller’s Print Spooler service to update an attacker-controlled host on new print jobs
+  - calling the RpcRemoteFindFirstPrinterChangeNotificationEx API
+  - The domain Controller would then authenticate to the attacker-controlled host, an act that can be abused to impersonate the domain Controller and compromise the domain in case of running on a system with unconstrained Kerberos Delegation
+  - can be leveraged for some NTLM relay use cases, in case that the victim’s computer account has administrative access on other machines.
+  - Microsoft has classified this behavior as an intended one, by design, and do not plan on fixing it.
+
+- Print Demon (CVE-2020-1048) (CVE-2020-1070 ??) (disclosed and patched May 2020) 
+  - write an arbitrary file by creating a printer port that pointed to a file on a disk
+  - Microsoft patched this flaw by checking permissions before allowing a user to add a port
+- CVE-2020-1337 (August 2020) 
+  - bypass della patch di Print Demon via a junction directory.
+- CVE-2020-1030 (Sept 2020) 
+  -  allowed an attacker to create a file or directory by "configuring the SpoolDirectory attribute on a printer" 
+  -  patch: Apply a permissions check to see if the current user had privileges to create the file or directory, respectively.
+- PrintNightmare - Microsoft -- CVE-2021-1675 (June 2021) 
+  - Initially, it was classified as a low severity vulnerability allowing Local Privilege Escalation (LPE)
+  - on June 21st, Microsoft changed the classification as it was discovered that the flaw allows Remote Code Execution (RCE) as well.
+- PrintNightmare - PoC Version -- CVE-2021-34527 (July 2021) 
+  - attacker must be authenticated
+  - once this is achieved the attacker can run code as NT AUTHORITY\SYSTEM
+  - Windows would fail to restrict access to the functionality that allows a user to add printers and drivers.
+  - Remote Code Execution (RCE) on any Server or Workstation with the Print Spooler service enabled.
+  - in case where a certain non-default configuration is set (Point and Print warnings disabled), the patch can be bypassed to gain both RCE and LPE.
+- SpoolFool CVE-2022-21999 
+   - actually two bypasses for CVE-2020-1030 (permissions-check bypass to write an arbitrary file using symbolic links.) 
+   
+
+## The Printer Bug 
+### Resources 
+- https://adsecurity.org/?p=4056
+- https://github.com/leechristensen/SpoolSample
+- https://book.hacktricks.xyz/windows-hardening/active-directory-methodology/printers-spooler-service-abuse
+
 ## Print Demon
 It allows an attacker to write an arbitrary file by creating a printer port that pointed to a file on a disk.
 
