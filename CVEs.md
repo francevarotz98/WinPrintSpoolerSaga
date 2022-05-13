@@ -5,6 +5,9 @@ It allows an attacker to write an arbitrary file by creating a printer port that
 
 - CVE-2020-1048
 
+### Resources 
+ - https://windows-internals.com/printdemon-cve-2020-1048/
+
 ### Windows versions needed for CVE-2020-1048
 Windows 10 Version 1803, Windows 10 Version 1809, Windows 10 Version 1709, Windows 10, Windows 10 Version 1607, Windows 10 Version 1909, Windows 10 Version 1903, Windows 7, Windows 8.1, Windows RT 8.1, Windows Server version 1803 (Core Installation),Windows Server 2019 (Core installation), Windows Server 2016 (Core installation), Windows Server 2008 (Core installation), Windows Server 2008 (Core installation), Windows Server 2008 R2 (Core installation), Windows Server 2012 (Core installation), Windows Server 2012 R2.
 
@@ -15,6 +18,9 @@ Windows 10 Version 1803, Windows 10 Version 1809, Windows 10 Version 1709, Windo
 
 - CVE-2020-1337   That is a bypass of (PrintDemon) CVE-2020-1048’s patch via a junction directory.
 - CVE-2020-1030   Allows arbitrary writing to the file system.
+
+### Resources 
+https://research.ifcr.dk/spoolfool-windows-print-spooler-privilege-escalation-cve-2022-22718-bf7752b68d81
 
 ### Windows versions needed for SpoolFool CVE-2020-1337 
 
@@ -53,3 +59,5 @@ However Microsoft's PrintNightmare security patch is incomplete.
 # Bibliography
 - https://www.secplicity.org/2022/02/23/spoolfool-windows-print-spooler-fooled-again/
 - https://blog.sygnia.co/demystifying-the-print-nightmare-vulnerability
+- https://www.accenture.com/us-en/blogs/cyber-defense/discovering-exploiting-shutting-down-dangerous-windows-print-spooler-vulnerability
+- https://voidsec.com/cve-2020-1337-printdemon-is-dead-long-live-printdemon/
