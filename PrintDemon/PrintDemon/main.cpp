@@ -31,23 +31,14 @@
 
 using std::cout; 
 using std::endl;
-using std::string; 
+using std::string;
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
-	
-	// output inside cout.txt 
-	std::ofstream file;
-	file.open("cout.txt");
-	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(file.rdbuf());
+// add a driver called "Generic / Text Only", with local computer as print server and inf file shipped with Windows
+HRESULT AddDriver(wchar_t* driverName) {
+	return InstallPrinterDriverFromPackage(NULL, NULL, driverName, NULL, 0);
+}
 
-	// add a driver called "Generic / Text Only", with local computer as print server and inf file shipped with Windows
-	// HRESULT result = InstallPrinterDriverFromPackage(NULL, NULL, L"Generic / Text Only", NULL, 0);
-
-	wchar_t* printerName = const_cast<wchar_t*>(L"testPrinterName");
-	wchar_t* portName = const_cast<wchar_t*>(L"c:\\windows\\tracing\\myport.txt");
-
-	// printer settings 
+DWORD AddPort(wchar_t* portName) {
 	HANDLE hPrinter; // printer handler 
 	PRINTER_DEFAULTS PrinterDefaults;
 	memset(&PrinterDefaults, 0, sizeof(PrinterDefaults)); // clear PRINTER_DEFAULTS structure 
@@ -72,7 +63,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 	if (!XcvData(hPrinter, L"AddPort", (LPBYTE)portName, portNameSize, NULL, 0, &needed, &xcvresult)) {
 		error = GetLastError();
 		cout << "Error in XcvData" << endl;
-		cout << "Error: " << error << " (: " << std::hex << error <<  ")" << endl;
+		cout << "Error: " << error << " (: " << std::hex << error << ")" << endl;
 	}
 
 	// try to close the handler to the printer 
@@ -82,8 +73,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 		cout << "Error: " << error << " (: " << std::hex << error << ")" << endl;
 	}
 
-	if (!error) 
-		cout << "Printer port successfully added" << endl;
+	return error; 
+}
+
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
+	
+	// output inside cout.txt 
+	std::ofstream file;
+	file.open("cout.txt");
+	std::streambuf* sbuf = std::cout.rdbuf();
+	std::cout.rdbuf(file.rdbuf());
+
+
+	wchar_t* printerName = const_cast<wchar_t*>(L"testPrinterName");
+	wchar_t* driverName = const_cast<wchar_t*>(L"Generic / Text Only");
+	wchar_t* portName = const_cast<wchar_t*>(L"c:\\windows\\tracing\\myport.txt");
+
+	// printer settings 
+	HRESULT driverResult = AddDriver(driverName); 
+	DWORD portResult = AddPort(portName); 
+
 
 	return 0;
 }
