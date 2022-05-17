@@ -35,6 +35,7 @@ using std::string;
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 	
+	// output inside cout.txt 
 	std::ofstream file;
 	file.open("cout.txt");
 	std::streambuf* sbuf = std::cout.rdbuf();
