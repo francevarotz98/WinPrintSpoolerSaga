@@ -64,3 +64,52 @@
 # Links
 - https://docs.microsoft.com/en-us/windows/win32/ipc/interprocess-communications
 
+# ReadPrinter 
+- The ReadPrinter function retrieves data from the specified printer.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/printdocs/readprinter
+
+# WritePrinter
+- The WritePrinter function notifies the print spooler that data should be written to the specified printer.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/printdocs/writeprinter
+
+# StartDocPrinter
+- The StartDocPrinter function notifies the print spooler that a document is to be spooled for printing.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/printdocs/startdocprinter
+
+# SetJobs
+- The SetJob function pauses, resumes, cancels, or restarts a print job on a specified printer. You can also use the SetJob function to set print job parameters, such as the print job priority and the document name.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/printdocs/setjob
+
+# OpenPrinter
+- The OpenPrinter function retrieves a handle to the specified printer or print server or other types of handles in the print subsystem.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/printdocs/openprinter
+
+# EnumJobs
+- The EnumJobs function retrieves information about a specified set of print jobs for a specified printer.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/printdocs/enumjobs
+
+# WriteFile
+- Writes data to the specified file or input/output (I/O) device.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile
+
+# ScheduleJob
+- The ScheduleJob function requests that the print spooler schedule a specified print job for printing.
+
+## Links
+- https://docs.microsoft.com/en-us/windows/win32/printdocs/schedulejob
+
+
