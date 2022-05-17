@@ -72,17 +72,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 	if (!XcvData(hPrinter, L"AddPort", (LPBYTE)portName, portNameSize, NULL, 0, &needed, &xcvresult)) {
 		error = GetLastError();
 		cout << "Error in XcvData" << endl;
+		cout << "Error: " << error << " (: " << std::hex << error <<  ")" << endl;
 	}
 
 	// try to close the handler to the printer 
 	if (!ClosePrinter(hPrinter)) {
 		error = GetLastError();
 		cout << "Error in closing the printer" << endl;
+		cout << "Error: " << error << " (: " << std::hex << error << ")" << endl;
 	}
 
-	if (error)
-		cout << "Error, decimal: " << error << "\thex: " << std::hex << error << endl;
-	else
+	if (!error) 
 		cout << "Printer port successfully added" << endl;
 
 	return 0;
