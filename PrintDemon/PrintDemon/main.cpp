@@ -26,14 +26,63 @@
 
 #include <windows.h>
 #include <string>
+#include <iostream>
+#include <fstream>
+
+using std::cout; 
+using std::endl;
+using std::string; 
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 	
+	std::ofstream file;
+	file.open("cout.txt");
+	std::streambuf* sbuf = std::cout.rdbuf();
+	std::cout.rdbuf(file.rdbuf());
+
 	// add a driver called "Generic / Text Only", with local computer as print server and inf file shipped with Windows
-	HRESULT result = InstallPrinterDriverFromPackage(NULL, NULL, L"Generic / Text Only", NULL, 0);
+	// HRESULT result = InstallPrinterDriverFromPackage(NULL, NULL, L"Generic / Text Only", NULL, 0);
 
-	// add a port TODO
+	wchar_t* printerName = const_cast<wchar_t*>(L"testPrinterName");
+	wchar_t* portName = const_cast<wchar_t*>(L"c:\\windows\\tracing\\myport.txt");
 
+	// printer settings 
+	HANDLE hPrinter; // printer handler 
+	PRINTER_DEFAULTS PrinterDefaults;
+	memset(&PrinterDefaults, 0, sizeof(PrinterDefaults)); // clear PRINTER_DEFAULTS structure 
+
+	PrinterDefaults.pDatatype = NULL;
+	PrinterDefaults.pDevMode = NULL;
+	PrinterDefaults.DesiredAccess = SERVER_ACCESS_ADMINISTER; // note: we are requesting the privileges to create a new port (all users can) 
+
+	// try to open a handle to the XCV port of the local spooler 
+	string xcvLocalPortStr = ", XcvMonitor Local Port";
+	wchar_t* xcvLocalPort = const_cast<wchar_t*>(L", XcvMonitor Local Port");
+	if (!OpenPrinter(xcvLocalPort, &hPrinter, &PrinterDefaults)) {
+		cout << "Error while trying to open XCV port of the local spooler" << endl;
+		return -1;
+	}
+
+	DWORD error = 0;
+
+	// XcvData allows to call a function on the spooling server, in this case we call AddPort 
+	DWORD portNameSize = ((DWORD)wcslen(portName) + 1) * sizeof(WCHAR);; // size of the string portName in byte
+	DWORD needed, xcvresult;
+	if (!XcvData(hPrinter, L"AddPort", (LPBYTE)portName, portNameSize, NULL, 0, &needed, &xcvresult)) {
+		error = GetLastError();
+		cout << "Error in XcvData" << endl;
+	}
+
+	// try to close the handler to the printer 
+	if (!ClosePrinter(hPrinter)) {
+		error = GetLastError();
+		cout << "Error in closing the printer" << endl;
+	}
+
+	if (error)
+		cout << "Error, decimal: " << error << "\thex: " << std::hex << error << endl;
+	else
+		cout << "Printer port successfully added" << endl;
 
 	return 0;
 }
