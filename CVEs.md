@@ -38,6 +38,10 @@ It allows an attacker to write an arbitrary file by creating a printer port that
 ### Resources 
  - https://windows-internals.com/printdemon-cve-2020-1048/
  - https://github.com/Ken-Abruzzi/CVE-2020-1048
+ - https://thalpius.com/2020/07/19/microsoft-printdemon-vulnerability/
+ - https://github.com/thalpius/Microsoft-PrintDemon-Vulnerability
+ - https://github.com/BC-SECURITY/Invoke-PrintDemon
+ - https://github.com/ionescu007/PrintDemon <-- this is the 'original' PoC of the vulnerability
 
 ## SpoolFool
 - CVE-2020-1337   That is a bypass of (PrintDemon) CVE-2020-1048’s patch via a junction directory.
