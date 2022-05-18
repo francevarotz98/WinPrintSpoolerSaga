@@ -38,6 +38,7 @@ HRESULT AddDriver(wchar_t* driverName) {
 	return InstallPrinterDriverFromPackage(NULL, NULL, driverName, NULL, 0);
 }
 
+// add a port with portName name
 DWORD AddPort(wchar_t* portName) {
 	HANDLE hPrinter; // printer handler 
 	PRINTER_DEFAULTS PrinterDefaults;
@@ -78,12 +79,11 @@ DWORD AddPort(wchar_t* portName) {
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 	
-	// output inside cout.txt 
+	// redirect cout to output.txt 
 	std::ofstream file;
-	file.open("cout.txt");
+	file.open("output.txt");
 	std::streambuf* sbuf = std::cout.rdbuf();
 	std::cout.rdbuf(file.rdbuf());
-
 
 	wchar_t* printerName = const_cast<wchar_t*>(L"testPrinterName");
 	wchar_t* driverName = const_cast<wchar_t*>(L"Generic / Text Only");
