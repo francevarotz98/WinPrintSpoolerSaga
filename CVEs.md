@@ -44,10 +44,13 @@ It allows an attacker to write an arbitrary file by creating a printer port that
  - https://github.com/ionescu007/PrintDemon <-- this is the 'original' PoC of the vulnerability
 
 ## SpoolFool
-- CVE-2020-1337   That is a bypass of (PrintDemon) CVE-2020-1048’s patch via a junction directory.
 - CVE-2020-1030   Allows arbitrary writing to the file system.
+- spoolfool = bypass della patch di CVE-2020-1030 
+
 ### Resources 
 https://research.ifcr.dk/spoolfool-windows-print-spooler-privilege-escalation-cve-2022-22718-bf7752b68d81
+https://www.accenture.com/us-en/blogs/cyber-defense/discovering-exploiting-shutting-down-dangerous-windows-print-spooler-vulnerability
+
 ### Windows versions needed for SpoolFool CVE-2020-1337 
 Windows 7, Windows RT 8.1, Windows 10,  Windows server 2008, Windows server 2012 R2, Windows server 2016, Windows server 2019, Windows server 2024.
 ### Windows versions needed for SpoolFool CVE-2020-1030
