@@ -28,7 +28,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
 	// HANDLE printerHandler = AddPrinter(printerName, driverName, portName); 
 	HANDLE printerHandler = OpenPrinter(printerName);
-	PrintText(printerHandler, "hello world");
+	PrintText(printerHandler, "123prova");
 
 	// close printer 
 	ClosePrinter(printerHandler);

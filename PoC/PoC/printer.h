@@ -1,6 +1,9 @@
 #pragma once
 
 #include <windows.h>
+#include <string>
+
+using std::string; 
 
 // add a driver called "Generic / Text Only", with local computer as print server and inf file shipped with Windows
 HRESULT AddDriver(wchar_t* driverName) {
@@ -21,7 +24,7 @@ DWORD AddPort(wchar_t* portName) {
 	string xcvLocalPortStr = ", XcvMonitor Local Port";
 	wchar_t* xcvLocalPort = const_cast<wchar_t*>(L", XcvMonitor Local Port");
 	if (!OpenPrinter(xcvLocalPort, &hPrinter, &PrinterDefaults)) {
-		cout << "Error while trying to open XCV port of the local spooler" << endl;
+		// cout << "Error while trying to open XCV port of the local spooler" << endl;
 		return -1;
 	}
 
