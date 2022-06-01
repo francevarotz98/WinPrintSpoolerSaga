@@ -77,22 +77,64 @@ DWORD AddPort(wchar_t* portName) {
 	return error; 
 }
 
+HANDLE AddPrinter(wchar_t* printerName, wchar_t* driverName, wchar_t* portName) {
+	
+	// Windows Server comes with built-in print processors. The one installed by default is known as WinPrint, and it handles the standard data types printed by Windows applications.
+	wchar_t* printProcessor = const_cast<wchar_t*>(L"WinPrint");
+	wchar_t* datatype = const_cast<wchar_t*>(L"RAW");
+	
+	PRINTER_INFO_2 printerInfo = { 0 };
+	printerInfo.pPortName = portName;
+	printerInfo.pDriverName = driverName;
+	printerInfo.pPrinterName = printerName;
+	printerInfo.pPrintProcessor = printProcessor; 
+	printerInfo.pDatatype = datatype;
+
+	return AddPrinter(NULL, 2, (LPBYTE)&printerInfo);
+}
+
+HANDLE OpenPrinter(wchar_t* printerName) {
+	HANDLE printerHandler = NULL; 
+	OpenPrinter(printerName, &printerHandler, NULL); 
+	return printerHandler; 
+}
+
+BOOL PrintText(HANDLE printerHandler, string text) {
+	DOC_INFO_1 docInfo;
+	docInfo.pDatatype = const_cast<wchar_t*>(L"RAW");
+	docInfo.pOutputFile = NULL;
+	docInfo.pDocName = const_cast<wchar_t*>(L"Document");
+	StartDocPrinter(printerHandler, 1, (LPBYTE)&docInfo);
+ 
+	DWORD dwNeeded = (DWORD)strlen(text.c_str());
+	char* pText = const_cast<char*>(text.c_str()); 
+	if (!WritePrinter(printerHandler, pText, dwNeeded, &dwNeeded))
+		return FALSE; 
+
+	return EndDocPrinter(printerHandler);
+}
+
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 	
 	// redirect cout to output.txt 
 	std::ofstream file;
 	file.open("output.txt");
 	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(file.rdbuf());
+	cout.rdbuf(file.rdbuf());
 
 	wchar_t* printerName = const_cast<wchar_t*>(L"testPrinterName");
 	wchar_t* driverName = const_cast<wchar_t*>(L"Generic / Text Only");
 	wchar_t* portName = const_cast<wchar_t*>(L"c:\\windows\\tracing\\myport.txt");
 
 	// printer settings 
-	HRESULT driverResult = AddDriver(driverName); 
-	DWORD portResult = AddPort(portName); 
+	// HRESULT driverResult = AddDriver(driverName); 
+	// DWORD portResult = AddPort(portName); 
 
+	// HANDLE printerHandler = AddPrinter(printerName, driverName, portName); 
+	HANDLE printerHandler = OpenPrinter(printerName); 
+	PrintText(printerHandler, "hello world"); 
 
+	// close printer 
+	ClosePrinter(printerHandler); 
 	return 0;
 }
