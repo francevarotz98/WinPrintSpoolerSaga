@@ -1,9 +1,9 @@
 #pragma once
 
-#include <windows.h>
+#include <Windows.h>
 #include <string>
 
-using std::string; 
+using std::string;
 
 // add a driver called "Generic / Text Only", with local computer as print server and inf file shipped with Windows
 HRESULT AddDriver(wchar_t* driverName) {
