@@ -1,6 +1,8 @@
 // dllmain.cpp : Definisce il punto di ingresso per l'applicazione DLL.
 #include "pch.h"
 
+#include<stdlib.h>
+
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -22,7 +24,7 @@ BOOL _cdecl SpoolerCopyFileEvent(
     _In_ LPWSTR pszKey,
     _In_ DWORD dwCopyFileEvent
 ) {
-    STARTUPINFO si;
+    /*STARTUPINFO si;
     PROCESS_INFORMATION pi;
 
     ZeroMemory(&si, sizeof(si));
@@ -42,6 +44,8 @@ BOOL _cdecl SpoolerCopyFileEvent(
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
 
+    return TRUE; */ 
+    system("calc"); 
     return TRUE; 
 }
 
