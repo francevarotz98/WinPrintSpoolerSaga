@@ -1,6 +1,6 @@
-$printerName = "PrinterDemon5"
+$printerName = "PrinterDemon"
 $driverName = "Generic / Text Only"
-$portName = "c:\windows\system32\portDemon5.txt"
+$portName = "c:\windows\system32\portDemon.txt"
 
 $stringTest = "Th1s is 4 fr34k!ng t3st"
 
