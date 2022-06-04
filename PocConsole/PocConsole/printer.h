@@ -66,8 +66,16 @@ HANDLE AddPrinter(wchar_t* printerName, wchar_t* driverName, wchar_t* portName) 
 }
 
 HANDLE OpenPrinter(wchar_t* printerName) {
+
+	PRINTER_DEFAULTS printerDefaults;
+	memset(&printerDefaults, 0, sizeof(printerDefaults)); // clear PRINTER_DEFAULTS structure 
+
+	printerDefaults.pDatatype = NULL;
+	printerDefaults.pDevMode = NULL;
+	printerDefaults.DesiredAccess = PRINTER_ALL_ACCESS;
+
 	HANDLE printerHandler = NULL;
-	OpenPrinter(printerName, &printerHandler, NULL);
+	OpenPrinter(printerName, &printerHandler, &printerDefaults);
 	return printerHandler;
 }
 
