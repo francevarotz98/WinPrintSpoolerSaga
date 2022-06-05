@@ -33,3 +33,8 @@ echo "[+] Done"
 echo "[] Writing to printer $printerName ..."
 $stringTest | Out-Printer -name $printerName
 echo "[+] DONE"
+
+echo "Restarting pc in 10s ..."
+Start-Sleep -Seconds 10
+echo "Restarting ..."
+Restart-Computer -Force
