@@ -1,8 +1,9 @@
-#pragma once
 
 #include <string>
 #include <iostream>
 #include <Windows.h>
+
+#include "utils.h"; 
 
 using std::cout;
 using std::endl;
@@ -10,7 +11,7 @@ using std::string;
 
 wchar_t* RESTART_COMMAND = const_cast<wchar_t*>(L"RESTART");
 
-BOOL registerApplicationAndRestartSystem() {
+bool registerApplicationAndRestartSystem() {
 	HRESULT hr = S_OK;
 
 	hr = RegisterApplicationRestart(RESTART_COMMAND, 0);
@@ -59,12 +60,11 @@ BOOL registerApplicationAndRestartSystem() {
 	return TRUE;
 }
 
-BOOL isAppStartedFromReboot(int argc, wchar_t* argv[]) {
+bool isAppStartedFromReboot(int argc, wchar_t* argv[]) {
 	return argc > 1; //  && !wcsncmp(RESTART_COMMAND, argv[1], sizeof(RESTART_COMMAND));
 }
 
-BOOL doesDirExists(wchar_t* dirPath)
-{
+bool doesDirExists(wchar_t* dirPath) {
 	DWORD ftyp = GetFileAttributes(dirPath);
 	if (ftyp == INVALID_FILE_ATTRIBUTES)
 		return false;  //something is wrong with your path!

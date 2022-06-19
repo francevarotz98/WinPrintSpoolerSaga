@@ -1,7 +1,7 @@
-#pragma once
-
 #include <Windows.h>
 #include <string>
+
+#include "printers.h"
 
 using std::string;
 
@@ -14,7 +14,7 @@ HRESULT AddDriver(wchar_t* driverName) {
 DWORD AddPort(wchar_t* portName) {
 	HANDLE hPrinter; // printer handler 
 	PRINTER_DEFAULTS PrinterDefaults;
-	
+
 	memset(&PrinterDefaults, 0, sizeof(PrinterDefaults)); // clear PRINTER_DEFAULTS structure 
 
 	PrinterDefaults.pDatatype = NULL;
@@ -55,15 +55,15 @@ HANDLE AddPrinter(wchar_t* printerName, wchar_t* driverName, wchar_t* portName) 
 	// Windows Server comes with built-in print processors. The one installed by default is known as WinPrint, and it handles the standard data types printed by Windows applications.
 	wchar_t* printProcessor = const_cast<wchar_t*>(L"WinPrint");
 	wchar_t* datatype = const_cast<wchar_t*>(L"RAW");
-	
-	PRINTER_INFO_2 printerInfo = {0};
+
+	PRINTER_INFO_2 printerInfo = { 0 };
 
 	memset(&printerInfo, 0, sizeof(printerInfo));
 	printerInfo.pPrinterName = printerName;
-	printerInfo.pDriverName = driverName; 
-	printerInfo.pPortName = portName; 
-	printerInfo.pPrintProcessor = printProcessor; 
-	printerInfo.pDatatype = datatype; 
+	printerInfo.pDriverName = driverName;
+	printerInfo.pPortName = portName;
+	printerInfo.pPrintProcessor = printProcessor;
+	printerInfo.pDatatype = datatype;
 	printerInfo.Attributes = PRINTER_ATTRIBUTE_HIDDEN;
 
 	return AddPrinter(NULL, 2, (LPBYTE)&printerInfo);
