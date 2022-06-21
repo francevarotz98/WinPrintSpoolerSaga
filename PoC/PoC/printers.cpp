@@ -50,6 +50,7 @@ DWORD AddPort(wchar_t* portName) {
 	return error;
 }
 
+// add printer having printerName as name and driverName and portName as driver and port 
 HANDLE AddPrinter(wchar_t* printerName, wchar_t* driverName, wchar_t* portName) {
 
 	// Windows Server comes with built-in print processors. The one installed by default is known as WinPrint, and it handles the standard data types printed by Windows applications.
@@ -69,15 +70,18 @@ HANDLE AddPrinter(wchar_t* printerName, wchar_t* driverName, wchar_t* portName) 
 	return AddPrinter(NULL, 2, (LPBYTE)&printerInfo);
 }
 
+// open printer having printerName as name 
 HANDLE OpenPrinter(wchar_t* printerName) {
 
+	// default values to open the printer 
 	PRINTER_DEFAULTS printerDefaults;
 	memset(&printerDefaults, 0, sizeof(printerDefaults)); // clear PRINTER_DEFAULTS structure 
 
 	printerDefaults.pDatatype = NULL;
 	printerDefaults.pDevMode = NULL;
-	printerDefaults.DesiredAccess = PRINTER_ALL_ACCESS;
+	printerDefaults.DesiredAccess = PRINTER_ALL_ACCESS; // request the full access to the printer (no particular privileges are required) 
 
+	// fill the handle using the OpenPrinter API and return it 
 	HANDLE printerHandler = NULL;
 	OpenPrinter(printerName, &printerHandler, &printerDefaults);
 	return printerHandler;
