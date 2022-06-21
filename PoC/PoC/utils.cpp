@@ -11,9 +11,11 @@ using std::string;
 
 wchar_t* RESTART_COMMAND = const_cast<wchar_t*>(L"RESTART");
 
+// reboot the system and register the application to be started after the next boot 
 bool registerApplicationAndRestartSystem() {
 	HRESULT hr = S_OK;
 
+	// register the application 
 	hr = RegisterApplicationRestart(RESTART_COMMAND, 0);
 	if (FAILED(hr)) {
 		cout << "[-] Error while registering the application for restart" << endl;
@@ -24,7 +26,7 @@ bool registerApplicationAndRestartSystem() {
 	HANDLE hToken;
 	TOKEN_PRIVILEGES tkp;
 
-	// Get a token for this process. 
+	// Get a token for the current process 
 	if (!OpenProcessToken(GetCurrentProcess(),
 		TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
 		cout << "[-] Error while obtaining token for current process: " << GetLastError() << endl;
@@ -45,6 +47,7 @@ bool registerApplicationAndRestartSystem() {
 	}
 	cout << "[+] Successflully obtained shutdown privileges" << endl;
 
+	// sleep for at least 1 minute, since windows restart the apps that have been active for at least that amount of time 
 	cout << "[i] Sleeping for 62 seconds" << endl;
 	Sleep(62 * 1000);
 
@@ -60,14 +63,17 @@ bool registerApplicationAndRestartSystem() {
 	return TRUE;
 }
 
+// depending on the method the app has started, it is called with different commands and parameter 
+// the function returns true if it has been runned after a system reboot, otherwise false 
 bool isAppStartedFromReboot(int argc, wchar_t* argv[]) {
 	return argc > 1; //  && !wcsncmp(RESTART_COMMAND, argv[1], sizeof(RESTART_COMMAND));
 }
 
+// check if the directory having dirPath as path exists 
 bool doesDirExists(wchar_t* dirPath) {
 	DWORD ftyp = GetFileAttributes(dirPath);
 	if (ftyp == INVALID_FILE_ATTRIBUTES)
-		return false;  //something is wrong with your path!
+		return false;  //something is wrong with the path!
 
 	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
 		return true;   // this is a directory!
