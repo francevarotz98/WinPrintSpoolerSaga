@@ -5,7 +5,7 @@
 - [Exe](exe/)
 - [Video](video/)
 - [PoC PrintDemon Powershell](<PrintDemon PowerShell/>)
-
+- [CVEs history](CVEs.md): file which contains a brief history of some of the CVEs that we analyzed inside the report.
 
 ## Environment used
 We used VirtualBox with a Windows ISO version 19H1, downloaded through Rufus, from this link:
