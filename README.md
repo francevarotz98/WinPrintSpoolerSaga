@@ -4,14 +4,22 @@
 - [PoC](PoC/)
 - [Exe](exe/)
 - [Video](video/)
-- [PoC_PrintDemon_Powershell](PrintDemon PowerShell/)
+- [PoC PrintDemon Powershell](<PrintDemon PowerShell/>)
 
 
 ## Environment used
 We used VirtualBox with a Windows ISO version 19H1, downloaded through Rufus, from this link:
-[Link_to_ISO](https://software.download.prss.microsoft.com/dbazure/Win10_1903_V1_EnglishInternational_x64.iso?t=a7b8800e-5b38-4072-b7b6-aa5e31c4e718&e=1655976965&h=61e61f133be9fc7aada697d56d2afffd87a5abec92cb48fe20758be55a3dd4c6).
-The link is working on the 22/06/2022.
-The Windows ISO in question is not patched, infact it respects all the requirements for the possible exploitation of the vulnerabilities.
+[Link to ISO](https://software.download.prss.microsoft.com/dbazure/Win10_1903_V1_EnglishInternational_x64.iso?t=a7b8800e-5b38-4072-b7b6-aa5e31c4e718&e=1655976965&h=61e61f133be9fc7aada697d56d2afffd87a5abec92cb48fe20758be55a3dd4c6).
+
+The link is working on the 22/06/2022, otherwise inside Rufus, follow the follwing steps:
+1. Click the arrow on the button named "SELEZIONA" and select "DOWNLOAD";
+2. A new window will pop up, select the version Windows 10 and press the button "CONTINUA";
+3. On release, select 19H1 one and then press the button "CONTINUA";
+4. Leave the default edition of Windows (i.e., Home/Pro) and press "CONTINUA";
+5. Choose the lenguage and architecture and press "CONTINUA";
+6. If you want to download via browser tick the square and then press "DOWNLOAD".
+
+The Windows ISO in question is not patched, in fact it respects all the requirements for the possible exploitation of the vulnerabilities.
 - The name of the user that we gave is: **User**, it does not have privileges.
 
 ## Project structure  
@@ -23,10 +31,14 @@ The prject is composed by the following files:
 
 ## Steps to run PoC
 ### Make static .exe file 
-In order to create the executable files of the different PoCs, it is needed to statically compile the source code with VisualStudio (have a look to this link for setting the configurations on VisualStudio: [Link_to_static_compilation](https://stackoverflow.com/questions/37398/how-do-i-make-a-fully-statically-linked-exe-with-visual-studio-express-2005).
+In order to create the executable files of the different PoCs, it is needed to statically compile the source code with VisualStudio (have a look to this link for setting the configurations on VisualStudio: [Link to static compilation](https://stackoverflow.com/questions/37398/how-do-i-make-a-fully-statically-linked-exe-with-visual-studio-express-2005).
 
 ### Compile attack 
 Depending on the attack that we want to perform its needed to: 
 1. inside the main function located in PoC.cpp, uncomment the line associated to the init function of the vulnerability considered; 
 2. in the case of CVE 2020-1030 and SpoolFool it is also necessary to create a file "payload.txt" inside "C:\Users\User\Desktop". The payload.txt will contain the data that will be inserted inside the file that will be created in "C:\Windows\System32\spool\drivers\x64\4";
 3. The executable file will be created inside the x64 folder by Visual Studio.
+
+## Beyond C++ - Powershell
+Beyond using the C++ API, we also wanted to try the exploitation of PrintDemon using Powershell.
+Inside the directory [PoC PrintDemon Powershell](<PrintDemon PowerShell/>) there is the implementation of a version of PrintDemon which can be run via Powershell.
