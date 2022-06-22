@@ -3,7 +3,7 @@
 ## Material provided
 - [PoC](PoC/)
 - [Exe](exe/)
-- [Video](video/)
+- [Video](video/): directory which contains the videos of the PoCs.
 - [PoC PrintDemon Powershell](<PrintDemon PowerShell/>)
 - [CVEs history](CVEs.md): file which contains a brief history of some of the CVEs that we analyzed inside the report.
 
