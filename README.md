@@ -4,20 +4,22 @@
 - [PoC](PoC/)
 - [Exe](exe/)
 - [Video](video/)
+- [PoC_PrintDemon_Powershell](PrintDemon PowerShell/)
 
 
 ## Environment used
 We used VirtualBox with a Windows ISO version 19H1, downloaded through Rufus, from this link:
 [Link_to_ISO](https://software.download.prss.microsoft.com/dbazure/Win10_1903_V1_EnglishInternational_x64.iso?t=a7b8800e-5b38-4072-b7b6-aa5e31c4e718&e=1655976965&h=61e61f133be9fc7aada697d56d2afffd87a5abec92cb48fe20758be55a3dd4c6).
+The link is working on the 22/06/2022.
 The Windows ISO in question is not patched, infact it respects all the requirements for the possible exploitation of the vulnerabilities.
 - The name of the user that we gave is: **User**, it does not have privileges.
 
 ## Project structure  
 The prject is composed by the following files: 
-- PoC.cpp: contains the main methods of the application and the init functions for each of the attack
-- exploits.h / exploits.cpp: contains the exploits for each vulnerability considered
-- utils.h / utils.cpp: contains utils functions, such as: request the reboot of the system, register the current application to be executed after a reboot and check if a directory exists 
-- printers.h / printers.cpp: contains utility function to interact with printers and manage printer ports and drivers 
+- **PoC.cpp**: contains the main methods of the application and the init functions for each of the attack;
+- **exploits.h / exploits.cpp**: contains the exploits for each vulnerability considered;
+- **utils.h / utils.cpp**: contains utils functions, such as: request the reboot of the system, register the current application to be executed after a reboot and check if a directory exists ;
+- **printers.h / printers.cpp**: contains utility function to interact with printers and manage printer ports and drivers.
 
 ## Steps to run PoC
 ### Make static .exe file 
