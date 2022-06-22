@@ -26,3 +26,4 @@ Vedi: https://stackoverflow.com/questions/37398/how-do-i-make-a-fully-statically
 Depending on the attack that we want to perform its needed to: 
 1. inside the main function located in PoC.cpp, uncomment the line associated to the init function of the vulnerability considered 
 2. in the case of cve_2020_1030 and spool_fool it is also necessary to create a file "payload.txt" inside "C:\Users\User\Desktop". The payload.txt will contain the data that will be inserted inside the file that will be create "C:\Windows\System32\spool\drivers\x64\4" 
+3. The executable file will be created inside the x64 folder by Visual Studio
