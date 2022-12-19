@@ -1,5 +1,5 @@
 # Ethical Hacking project
-Bash and C++ PoCs for critical / high impact Windows Spooler vulnerabilities found in 2020-22: 
+PowerShell and C++ PoCs for critical / high impact Windows Spooler vulnerabilities found in 2020-22: 
 - [CVE-2020-1337](https://nvd.nist.gov/vuln/detail/CVE-2020-1037) 
 - [CVE-2020-1048, aka PrintDemon](https://nvd.nist.gov/vuln/detail/cve-2020-1048)
 - [CVE-2020-1030](https://nvd.nist.gov/vuln/detail/CVE-2020-1030)
